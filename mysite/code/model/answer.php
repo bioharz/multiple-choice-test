@@ -19,7 +19,7 @@ class Answer extends \SilverStripe\ORM\DataObject
     ];
 
     private static $summary_fields = [
-        'Answer'
+        'Answer', 'Correct'
     ];
 
 }

@@ -22,7 +22,17 @@ class Question extends \SilverStripe\ORM\DataObject
     ];
 
     private static $summary_fields = [
-        'Question'
+        'Question',
+    ];
+
+    public function getTitle()
+    {
+        return $this->getField('Question');
+    }
+
+
+    private static $belongs_many_many = [
+        'Test' => 'Test.Question',
     ];
 
 }
