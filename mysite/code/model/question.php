@@ -17,6 +17,10 @@ class Question extends \SilverStripe\ORM\DataObject
         'Category' => 'Category'
     ];
 
+    private static $has_many = [
+        'Answer' => 'Answer',
+    ];
+
     private static $summary_fields = [
         'Question'
     ];
