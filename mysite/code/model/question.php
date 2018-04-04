@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bioharz
- * Date: 07.03.18
- * Time: 12:30
- */
 
 class Question extends \SilverStripe\ORM\DataObject
 {
 
-    private static $db =  [
+    private static $db = [
         'Question' => 'Varchar(100)'
     ];
 
@@ -18,21 +12,15 @@ class Question extends \SilverStripe\ORM\DataObject
     ];
 
     private static $has_many = [
-        'Answer' => 'Answer',
+        'Answers' => 'Answer'
     ];
 
     private static $summary_fields = [
-        'Question',
+        'Question'
     ];
 
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->getField('Question');
     }
-
-
-    private static $belongs_many_many = [
-        'Test' => 'Test.Question',
-    ];
 
 }

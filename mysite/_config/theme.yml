@@ -6,4 +6,4 @@ SilverStripe\View\SSViewer:
     - 'simple'
     - '$default'
 SilverStripe\i18n\i18n:
-  default_locale: 'de_DE'
+  default_locale: 'en_US'
