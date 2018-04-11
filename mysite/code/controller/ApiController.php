@@ -4,15 +4,42 @@ class ApiController extends \SilverStripe\Control\Controller
 {
     public function index() {
         $code = $this->getRequest()->param('code');
-
-        $this->getResponse()->addHeader('Access-Control-Allow-Origin', '*');
-        $this->getResponse()->addHeader('Content-type', 'application/json');
+        $response = $this->getResponse();
 
         if ($this->getRequest()->isPOST()) {
-            return $this->createTest();
+            $response = $this->createTest();
         } elseif ($this->getRequest()->isGET()) {
-            return $this->retrieveTest($code);
+            $response = $this->retrieveTest($code);
+        } elseif ($this->getRequest()->isPUT()) {
+            $response = $this->saveTest($code);
         }
+
+        $response->addHeader('Content-type', 'application/json');
+        $response->addHeader('Access-Control-Allow-Origin', $this->getRequest()->getHeader('Origin'));
+        $response->addHeader('Access-Control-Allow-Headers', '*');
+        $response->addHeader('Access-Control-Allow-Methods', '*');
+        $response->addHeader('Access-Control-Max-Age', '86400');
+
+        return $response;
+    }
+
+    protected function saveTest($code) {
+        $response = [];
+
+        try {
+            $testExecution = TestExecution::findTestExecutionByCode($code);
+            $answers = json_decode($this->getRequest()->getBody(), true);
+
+            foreach ($answers as $questionId => $answerIds) {
+                $testExecution->saveQuestionWithAnswers($questionId, $answerIds);
+            }
+        } catch (\Exception $e) {
+            $this->getResponse()->setStatusCode(400);
+            $response['error'] = 'Wrong or missing data';
+        }
+
+        $this->getResponse()->setBody(json_encode($response));
+        return $this->getResponse();
     }
 
     protected function retrieveTest($code) {
@@ -34,7 +61,6 @@ class ApiController extends \SilverStripe\Control\Controller
         }
 
         $this->getResponse()->setBody(json_encode($response));
-
         return $this->getResponse();
     }
 
